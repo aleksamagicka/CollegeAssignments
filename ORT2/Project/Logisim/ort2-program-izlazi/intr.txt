@@ -1,0 +1,29 @@
+step00: br (if notINTR then step00)
+step01: br (if notPrekid then KRAJ)
+
+// Cuvanje PC na steku
+step02: ldMAR, mxMAR1, mxMAR0, ldMDR, mxMDR1, incSP
+step03: wrMEM, br (if notFCBUS then step03)
+step04: ldMAR, mxMAR1, mxMAR0, ldMDR, mxMDR1, mxMDR0, incSP
+step05: wrMEM, br (if notFCBUS then step05)
+
+// Cuvanje PSW na steku
+step06: ldMAR, mxMAR1, mxMAR0, ldMDR, mxMDR2, incSP
+step07: wrMEM, br (if notFCBUS then step07)
+step08: ldMAR, mxMAR1, mxMAR0, ldMDR, mxMDR2, mxMDR1, mxMDR0, incSP
+step09: wrMEM, br (if notFCBUS then step09)
+
+// Cuvanje akumulatora na steku
+step0A; ldMAR, mxMAR1, mxMAR0, ldMDR, mxMDR2, mxMDR1, incSP
+step0B: wrMEM, br (if notFCBUS then step0B)
+step0C: ldMAR, mxMAR1, mxMAR0, ldMDR, mxMDR2, mxMDR0, incSP
+step0D: wrMEM, br (if notFCBUS then step0D)
+ 
+// Ucitavanje nove adrese u PC
+step0: ldBR, ldMAR, mxMAR2
+step1: rdMEM, ldMDR, br (if notFCBUS then step1)
+step2: ldPC, mxPC1, incMAR
+step3: rdMEM, ldMDR, br (if notFCBUS then step3)
+step4: ldPC, mxPC2, br KRAJ
+
+kraj: clINTR, stFETCH, br step00

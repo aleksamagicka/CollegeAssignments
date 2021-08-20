@@ -1,0 +1,127 @@
+step00: br (if notEXEC then step00)
+
+// HALT!
+step01: clPSWSTART, br KRAJ
+
+// RTS!
+step0: decSP
+step0: ldMAR, mxMAR0, mxMAR1, decSP
+step1: rdMEM, ldMDR, br (if notFCBUS then step1)
+step2: ldPC, mxPC1, ldMAR, mxMAR0, mxMAR1, decSP
+step3: rdMEM, ldMDR, br (if notFCBUS then step3)
+step4: ldPC, mxPC2, br KRAJ
+
+// INTE!
+step0: setI, br KRAJ
+
+// INTD!
+step0: rstI, br KRAJ
+
+// ROL!
+step0: slA, br KRAJ
+
+// ROR!
+step0: srA, br KRAJ
+
+// DEC!
+step0: decA, br KRAJ
+
+// BLEQ!
+step0: br (if notLEQ then KRAJ)
+step1: ldPC, mxPC0, br KRAJ
+
+// BNVF!
+step0: br (if notNVF then KRAJ)
+step1: ldPC, mxPC0, br KRAJ
+
+// BLSSU!
+step0: br (if notSSU then KRAJ)
+step1: ldPC, mxPC0, br KRAJ
+
+// BOVF!
+step0: br (if notOVF then KRAJ)
+step1: ldPC, mxPC0, br KRAJ
+
+// JEQL!
+step0: br (if notJEQL then KRAJ)
+step1: ldPC, mxPC0, mxPC1, br KRAJ
+
+// BR!
+step0: ldPC, mxPC0, br KRAJ
+
+// JMP!
+step0: ldPC, br KRAJ
+
+// JSR!
+
+// Stek raste prema visim i ukazuje na prvu slobodnu
+// Snimi PC na stek
+
+step0: ldMAR, mxMAR1, mxMAR0, mxMDR1, ldMDR
+step1: wrMEM, br (if notFCBUS then step1)
+step2: incSP, incMAR, ldMDR, mxMDR1, mxMDR0
+step3: wrMEM, br (if notFCBUS then step3)
+step4: ldPC, mxPC1, mxPC0, incSP, br KRAJ
+
+// LD
+step0: ldA, mxA0
+step1: ldN, ldZ, br KRAJ
+
+// ST!
+step0: br (if notregdir then step3)
+step1: ldGPR2
+step2: wrGPR, mxGPR0, br KRAJ
+step3: ldMDR, mxMDR1
+step4: wrMEM, br (if notFCBUS then step4)
+step5: ldMDR, mxMDR1, mxMDR0, incMAR
+step6: wrMEM, br (if notFCBUS then step6)
+step7: br KRAJ
+
+// SUB
+-- U akumulator A ucitaj A-B
+step0: sub, ldA
+step1: ldN, ldZ, ldV, br KRAJ
+
+// ADD
+-- U akumulator A ucitaj A+B
+step0: add, ldA
+step1: ldN, ldZ, ldV, br KRAJ
+
+// MUL
+step0: clP
+step1: br (if brpun then step5)
+step2: br (if notb0 then step4)
+step3: ldP
+step4: incBrojac, slA, srB, br step1
+step5: ldA, mxA1, br KRAJ
+
+// RTI
+// Vrati sve redom sa steka, A, PSW pa PC i KRAJ
+step0: decSP
+step1: ldMAR, mxMAR1, mxMAR0, decSP
+step2: rdMEM, ldMDR, br (if notFCBUS then step2)
+// Ucitaj A7..0
+step3: ldGenAdr2, ldMAR, mxMAR1, mxMAR0, decSP
+step4: rdMEM, ldMDR, br (if notFCBUS then step4)
+// Ucitaj A15..0
+step5: ldGenAdr1, ldMAR, mxMAR1, mxMAR0, decSP
+step6: ldA, mxA1, mxA0 // Ucitaj u A
+step7: rdMEM, ldMDR, br (if notFCBUS then step7)
+// Ucitaj PSW7..0
+step8: ldGenAdr2, ldMAR, mxMAR1, mxMAR0, decSP
+step9: rdMEM, ldMDR, br (if notFCBUS then step9)
+// Ucitaj PSW15..8
+step10: ldGenAdr1, ldMAR, mxMAR1, mxMAR0, decSP
+// Ucitaj sad u PSW-ove
+step11: ldSTART, ldZ, ldV, ldN, ldC
+
+// Sad PC
+step12: rdMEM, ldMDR, br (if notFCBUS then step12)
+step13: ldGenAdr2, ldMAR, mxMAR1, mxMAR0, decSP
+step14: rdMEM, ldMDR, br (if notFCBUS then step14)
+step15: ldGenAdr1, decSP
+// Ucitaj u PC
+step16: ldPC, mxPC2, mxPC1, mxPC0, br KRAJ
+
+
+KRAJ: stINTR, clEXEC, br step00
