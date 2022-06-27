@@ -1,0 +1,25 @@
+clear && python main.py --type authentication --authentication-address http://127.0.0.1:5002 --jwt-secret JWTSecretDevKey --roles-field roles --administrator-role admin --customer-role customer --warehouse-role manager
+
+clear && python main.py --type level0 --with-authentication --authentication-address http://127.0.0.1:5002 --customer-address http://127.0.0.1:5005 --warehouse-address http://127.0.0.1:5003
+
+clear && python main.py --type level1 --with-authentication --authentication-address http://127.0.0.1:5002 --customer-address http://127.0.0.1:5005 --warehouse-address http://127.0.0.1:5003
+
+clear && python main.py --type level3 --with-authentication --authentication-address http://127.0.0.1:5002 --customer-address http://127.0.0.1:5005 --warehouse-address http://127.0.0.1:5003 --administrator-address http://127.0.0.1:5006
+
+clear && python main.py --type all --with-authentication --authentication-address http://127.0.0.1:5002 --jwt-secret JWTSecretDevKey --roles-field roles --administrator-role admin --customer-role customer --warehouse-role manager --customer-address http://127.0.0.1:5005 --warehouse-address http://127.0.0.1:5003 --administrator-address http://127.0.0.1:5006
+
+
+
+
+
+DOCKER SWARM uputstvo
+
+Pokretanje:
+    docker stack deploy --compose-file docker-compose2.yaml app\
+
+    Sacekati da se baze dignu i migracije obave, proveriti putem adminera da li postoje tabele
+
+Brisanje:
+    docker stack rm app
+
+    Potom sacekati neko vreme i u Docker Desktopu pod volumes obrisati app_dbdata i app_dbdata2

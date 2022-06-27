@@ -1,0 +1,122 @@
+version: '3'
+
+services:
+  adminer:
+    image: adminer
+    ports:
+      - 8081:8080
+    networks:
+      - authenticationDBNetwork
+      - productDBNetwork
+  authenticationDB:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+    volumes:
+    - dbdata:/var/lib/mysql
+    networks:
+      - authenticationDBNetwork
+  authenticationDBMigration:
+    image: authenticationdbmigration
+    environment:
+      - DATABASE_URL=authenticationDB
+    networks:
+      - authenticationDBNetwork
+  authentication:
+    image: authentication
+    environment:
+      - DATABASE_URL=authenticationDB
+    ports:
+    - 5002:5002
+    networks:
+      - authenticationDBNetwork
+  productDB:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+    volumes:
+    - dbdata2:/var/lib/mysql
+    networks:
+      - productDBNetwork
+      - customerProductDB
+      - adminProductDB
+      - daemonProductDB
+  productDBMigration:
+    image: productdbmigration
+    environment:
+      - DATABASE_URL=productDB
+      - REDIS_URL=redis
+    networks:
+      - productDBNetwork
+  redis:
+    image: redis
+    networks:
+      - daemonRedis
+      - warehouseRedis
+  warehouse:
+    image: warehouse
+    deploy:
+      replicas: 3
+    environment:
+      - DATABASE_URL=productDB
+      - REDIS_URL=redis
+    ports:
+    - 5003:5003
+    networks:
+      - warehouseRedis
+  daemon:
+    image: daemon
+    environment:
+      - DATABASE_URL=productDB
+      - REDIS_URL=redis
+    networks:
+      - daemonProductDB
+      - daemonRedis
+  customer:
+    image: customer
+    deploy:
+      replicas: 3
+    environment:
+      - DATABASE_URL=productDB
+      - REDIS_URL=redis
+    ports:
+    - 5005:5005
+    networks:
+      - customerProductDB
+  admin:
+    image: admin
+    environment:
+      - DATABASE_URL=productDB
+      - REDIS_URL=redis
+    ports:
+    - 5006:5006
+    networks:
+      - adminProductDB
+
+volumes:
+  dbdata:
+  dbdata2:
+
+networks:
+  authenticationDBNetwork:
+    driver: overlay
+  productDBNetwork:
+    driver: overlay
+  customerProductDB:
+    driver: overlay
+  adminProductDB:
+    driver: overlay
+  daemonProductDB:
+    driver: overlay
+  daemonRedis:
+    driver: overlay
+  warehouseRedis:
+    driver: overlay
