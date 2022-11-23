@@ -1,0 +1,100 @@
+21 November 2022 08:06:15 PM
+A = 3.000000
+B = 2.000000
+C = 1.000000
+N = 1000
+H = 0.0010
+
+
+RMS absolute error in solution = 2.171700e-02
+21 November 2022 08:06:19 PM
+21 November 2022 08:06:19 PM
+A = 3.000000
+B = 2.000000
+C = 1.000000
+N = 1000
+H = 0.0010
+
+
+OPENMP: RMS absolute error in solution = 2.177638e-02, time: 0.215671
+21 November 2022 08:06:19 PM
+
+TEST PASS
+
+
+
+21 November 2022 08:06:19 PM
+A = 3.000000
+B = 2.000000
+C = 1.000000
+N = 5000
+H = 0.0010
+
+
+RMS absolute error in solution = 2.127277e-02
+21 November 2022 08:06:36 PM
+21 November 2022 08:06:36 PM
+A = 3.000000
+B = 2.000000
+C = 1.000000
+N = 5000
+H = 0.0010
+
+
+OPENMP: RMS absolute error in solution = 2.119561e-02, time: 1.090831
+21 November 2022 08:06:37 PM
+
+TEST PASS
+
+
+
+21 November 2022 08:06:37 PM
+A = 3.000000
+B = 2.000000
+C = 1.000000
+N = 10000
+H = 0.0010
+
+
+RMS absolute error in solution = 2.109998e-02
+21 November 2022 08:07:10 PM
+21 November 2022 08:07:10 PM
+A = 3.000000
+B = 2.000000
+C = 1.000000
+N = 10000
+H = 0.0010
+
+
+OPENMP: RMS absolute error in solution = 2.117248e-02, time: 2.184714
+21 November 2022 08:07:12 PM
+
+TEST PASS
+
+
+
+21 November 2022 08:07:12 PM
+A = 3.000000
+B = 2.000000
+C = 1.000000
+N = 20000
+H = 0.0010
+
+
+RMS absolute error in solution = 2.102653e-02
+21 November 2022 08:08:19 PM
+21 November 2022 08:08:19 PM
+A = 3.000000
+B = 2.000000
+C = 1.000000
+N = 20000
+H = 0.0010
+
+
+OPENMP: RMS absolute error in solution = 2.111907e-02, time: 4.364953
+21 November 2022 08:08:23 PM
+
+TEST PASS
+
+
+
