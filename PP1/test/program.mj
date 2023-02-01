@@ -1,0 +1,13 @@
+program MJProgram
+    int x;
+{
+    int main() {
+
+        print(1006);
+
+        x = 4 + 5;
+
+        print(2);
+        print(x);
+    }
+}
