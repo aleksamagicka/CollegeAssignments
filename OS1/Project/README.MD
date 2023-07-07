@@ -1,4 +1,4 @@
 # OS1 project
 
-Proof that I can work with brain-damaged compilers from 1992.
+Proof that I can work with unorthodox compilers from 1992.
 
